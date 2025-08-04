@@ -1,957 +1,564 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>Process Data System - Issue Tracker</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-    <!-- Custom CSS -->
-      <link rel="stylesheet" href="style.css">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> JVK - Issue Tracker</title>
     
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <form id="form1" runat="server">
-        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true" />
-
-        <!-- Header -->
-        <div class="header-section">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <div class="logo-section">
-                            <div class="logo-icon">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <div>
-                                <h4 class="mb-0 fw-bold text-dark">Process Data System</h4>
-                                <small class="text-muted">Issue Tracking & Management</small>
-                            </div>
+    <!-- Header -->
+    <header class="header-section">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="logo-section">
+                        <div class="logo-icon">
+                            <i class="fas fa-chart-line"></i>
                         </div>
-                    </div>
-                    <div class="col-md-4 text-end">
-                        <button type="button" class="btn btn-outline-secondary btn-sm me-2">
-                            <i class="fas fa-bell me-1"></i>Notifications
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary btn-sm">
-                            <i class="fas fa-cog me-1"></i>Settings
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="container-fluid mt-4">
-            <!-- Welcome Banner -->
-            <div class="welcome-banner">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <h2 class="fw-bold mb-2">Welcome to PDS Issue Tracker</h2>
-                        <p class="mb-0 opacity-75">Manage your requirements, modifications, and bug reports efficiently</p>
-                    </div>
-                    <div class="col-md-4 text-end d-none d-md-block">
-                        <i class="fas fa-chart-bar" style="font-size: 4rem; opacity: 0.3;"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Statistics Cards -->
-            <asp:UpdatePanel ID="UpdatePanelStats" runat="server">
-                <ContentTemplate>
-                    <div class="row mb-4">
-                        <div class="col-lg-3 col-md-6 mb-3">
-                            <div class="stats-card">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <p class="text-muted mb-1 small fw-medium">Total Issues</p>
-                                        <h3 class="fw-bold mb-2">
-                                            <asp:Label ID="lblTotalIssues" runat="server" Text="0" />
-                                        </h3>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-arrow-up text-success me-1"></i>
-                                            <span class="text-success small fw-medium">+12%</span>
-                                            <span class="text-muted small ms-1">vs last month</span>
-                                        </div>
-                                    </div>
-                                    <div class="stats-icon primary">
-                                        <i class="fas fa-file-alt"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 mb-3">
-                            <div class="stats-card danger">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <p class="text-muted mb-1 small fw-medium">Open Issues</p>
-                                        <h3 class="fw-bold mb-2">
-                                            <asp:Label ID="lblOpenIssues" runat="server" Text="0" />
-                                        </h3>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-arrow-down text-success me-1"></i>
-                                            <span class="text-success small fw-medium">-8%</span>
-                                            <span class="text-muted small ms-1">vs last month</span>
-                                        </div>
-                                    </div>
-                                    <div class="stats-icon danger">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 mb-3">
-                            <div class="stats-card warning">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <p class="text-muted mb-1 small fw-medium">In Progress</p>
-                                        <h3 class="fw-bold mb-2">
-                                            <asp:Label ID="lblInProgressIssues" runat="server" Text="0" />
-                                        </h3>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-arrow-up text-success me-1"></i>
-                                            <span class="text-success small fw-medium">+15%</span>
-                                            <span class="text-muted small ms-1">vs last month</span>
-                                        </div>
-                                    </div>
-                                    <div class="stats-icon warning">
-                                        <i class="fas fa-clock"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 mb-3">
-                            <div class="stats-card success">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <p class="text-muted mb-1 small fw-medium">Resolved</p>
-                                        <h3 class="fw-bold mb-2">
-                                            <asp:Label ID="lblResolvedIssues" runat="server" Text="0" />
-                                        </h3>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-arrow-up text-success me-1"></i>
-                                            <span class="text-success small fw-medium">+23%</span>
-                                            <span class="text-muted small ms-1">vs last month</span>
-                                        </div>
-                                    </div>
-                                    <div class="stats-icon success">
-                                        <i class="fas fa-check-circle"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </ContentTemplate>
-            </asp:UpdatePanel>
-
-            <!-- Quick Actions -->
-            <div class="mb-4">
-                <h3 class="fw-bold mb-2">Quick Actions</h3>
-                <p class="text-muted mb-4">Create new issues and manage your requests efficiently</p>
-
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="action-card text-center">
-                            <div class="action-icon success mx-auto">
-                                <i class="fas fa-plus"></i>
-                            </div>
-                            <h5 class="fw-bold mb-2">New Requirement</h5>
-                            <p class="text-muted mb-3">Submit new feature requests and system requirements</p>
-                            <button type="button" class="btn btn-success btn-custom" onclick="showNewIssueModal('Requirement', 'New Requirement', 'Submit new feature requests and system requirements', 'fa-plus', 'success');">
-                                Create Requirement
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="action-card text-center">
-                            <div class="action-icon warning mx-auto">
-                                <i class="fas fa-edit"></i>
-                            </div>
-                            <h5 class="fw-bold mb-2">Modification Request</h5>
-                            <p class="text-muted mb-3">Request changes to existing pages and features</p>
-                            <button type="button" class="btn btn-warning btn-custom" onclick="showNewIssueModal('Modification', 'Modification Request', 'Request changes to existing pages and features', 'fa-edit', 'warning');">
-                                Create Modification
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="action-card text-center">
-                            <div class="action-icon danger mx-auto">
-                                <i class="fas fa-bug"></i>
-                            </div>
-                            <h5 class="fw-bold mb-2">Bug Report</h5>
-                            <p class="text-muted mb-3">Report bugs, errors, and system issues</p>
-                            <button type="button" class="btn btn-danger btn-custom" onclick="showNewIssueModal('Bug', 'Bug Report', 'Report bugs, errors, and system issues', 'fa-bug', 'danger');">
-                                Create Bug Report
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="action-card text-center">
-                            <div class="action-icon info mx-auto">
-                                <i class="fas fa-chart-pie"></i>
-                            </div>
-                            <h5 class="fw-bold mb-2">Report Analysis</h5>
-                            <p class="text-muted mb-3">View detailed analytics and performance metrics</p>
-                            <asp:Button ID="btnReportAnalysis" runat="server"
-                                CssClass="btn btn-primary btn-custom"
-                                Text="View Analysis"
-                                OnClick="btnReportAnalysis_Click" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main Content Tabs -->
-            <ul class="nav nav-tabs mb-4" id="mainTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button" role="tab">
-                        <i class="fas fa-chart-pie me-2"></i>Dashboard
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="issues-tab" data-bs-toggle="tab" data-bs-target="#issues" type="button" role="tab">
-                        <i class="fas fa-list me-2"></i>All Issues
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="reports-tab" data-bs-toggle="tab" data-bs-target="#reports" type="button" role="tab">
-                        <i class="fas fa-chart-bar me-2"></i>Reports
-                    </button>
-                </li>
-            </ul>
-
-            <div class="tab-content" id="mainTabsContent">
-                <!-- Dashboard Tab -->
-                <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
-                    <div class="row">
-                        <div class="col-lg-8 mb-4">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-header bg-white border-bottom">
-                                    <h5 class="card-title mb-0">
-                                        <i class="fas fa-list me-2 text-primary"></i>Recent Issues
-                                    </h5>
-                                    <small class="text-muted">Latest issues requiring attention</small>
-                                </div>
-                                <div class="card-body">
-                                    <asp:UpdatePanel ID="UpdatePanelIssues" runat="server">
-                                        <ContentTemplate>
-                                            <asp:Repeater ID="rptRecentIssues" runat="server" OnItemCommand="rptRecentIssues_ItemCommand">
-                                                <ItemTemplate>
-                                                    <div class="issue-card">
-                                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                                            <div class="d-flex align-items-center gap-2">
-                                                                <span class="badge badge-<%# GetIssueTypeClass(Eval("IssueType").ToString()) %>">
-                                                                    <%# Eval("IssueType") %>
-                                                                </span>
-                                                                <small class="text-muted font-monospace"><%# Eval("IssueID") %></small>
-                                                            </div>
-                                                            <div class="btn-group btn-group-sm">
-                                                                <asp:LinkButton ID="btnView" runat="server"
-                                                                    CssClass="btn btn-outline-primary btn-sm"
-                                                                    CommandName="View"
-                                                                    CommandArgument='<%# Eval("IssueID") %>'
-                                                                    ToolTip="View Issue">
-                                                                    <i class="fas fa-eye"></i>
-                                                                </asp:LinkButton>
-                                                                <asp:LinkButton ID="btnEdit" runat="server"
-                                                                    CssClass="btn btn-outline-secondary btn-sm"
-                                                                    CommandName="Edit"
-                                                                    CommandArgument='<%# Eval("IssueID") %>'
-                                                                    ToolTip="Edit Issue">
-                                                                    <i class="fas fa-edit"></i>
-                                                                </asp:LinkButton>
-                                                            </div>
-                                                        </div>
-                                                        <h6 class="fw-bold mb-2"><%# Eval("Title") %></h6>
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <div class="d-flex align-items-center gap-3">
-                                                                <span class="badge badge-<%# GetStatusClass(Eval("Status").ToString()) %>">
-                                                                    <i class="fas <%# GetStatusIcon(Eval("Status").ToString()) %> me-1"></i>
-                                                                    <%# Eval("Status") %>
-                                                                </span>
-                                                                <span class="badge bg-light text-dark"><%# Eval("Priority") %></span>
-                                                                <small class="text-muted"><%# Eval("Department") %></small>
-                                                            </div>
-                                                            <div class="text-end">
-                                                                <div class="fw-medium small"><%# Eval("Reporter") %></div>
-                                                                <div class="text-muted small"><%# Eval("CreatedDate", "{0:MMM dd, yyyy}") %></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </ItemTemplate>
-                                            </asp:Repeater>
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 mb-4">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-header bg-white border-bottom">
-                                    <h5 class="card-title mb-0">
-                                        <i class="fas fa-clock me-2 text-primary"></i>Recent Activity
-                                    </h5>
-                                    <small class="text-muted">Latest updates and changes</small>
-                                </div>
-                                <div class="card-body">
-                                    <asp:UpdatePanel ID="UpdatePanelActivity" runat="server">
-                                        <ContentTemplate>
-                                            <asp:Repeater ID="rptRecentActivity" runat="server">
-                                                <ItemTemplate>
-                                                    <div class="activity-item">
-                                                        <div class="d-flex align-items-start gap-3">
-                                                            <div class="activity-icon bg-light">
-                                                                <i class="fas <%# GetActivityIcon(Eval("ActivityType").ToString()) %>"></i>
-                                                            </div>
-                                                            <div class="flex-grow-1">
-                                                                <div class="d-flex justify-content-between align-items-start mb-1">
-                                                                    <small class="fw-medium"><%# Eval("ActivityType") %></small>
-                                                                    <span class="badge badge-<%# GetIssueTypeClass(Eval("IssueType").ToString()) %> small">
-                                                                        <%# Eval("IssueType") %>
-                                                                    </span>
-                                                                </div>
-                                                                <p class="small text-muted mb-1"><%# Eval("Description") %></p>
-                                                                <div class="d-flex align-items-center gap-2 small text-muted">
-                                                                    <span><%# Eval("UserName") %></span>
-                                                                    <span>•</span>
-                                                                    <span><%# Eval("ActivityTime") %></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </ItemTemplate>
-                                            </asp:Repeater>
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- All Issues Tab -->
-                <div class="tab-pane fade" id="issues" role="tabpanel">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
-                            <h3 class="fw-bold mb-1">All Issues</h3>
-                            <p class="text-muted mb-0">Manage and track all your issues</p>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-outline-secondary btn-sm">
-                                <i class="fas fa-filter me-1"></i>Filter
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm">
-                                <i class="fas fa-search me-1"></i>Search
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm">
-                                <i class="fas fa-download me-1"></i>Export
-                            </button>
+                            <h4 class="mb-0 fw-bold text-dark">Process Data System</h4>
+                            <small class="text-muted">Issue Tracking & Management</small>
                         </div>
                     </div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button type="button" class="btn btn-outline-secondary btn-sm me-2">
+                        <i class="fas fa-bell me-1"></i>Notifications
+                        <span class="badge bg-danger ms-1">3</span>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-cog me-1"></i>Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
 
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <asp:UpdatePanel ID="UpdatePanelAllIssues" runat="server">
-                                    <ContentTemplate>
-                                        <asp:GridView ID="gvAllIssues" runat="server"
-                                            CssClass="table table-hover"
-                                            AutoGenerateColumns="false"
-                                            GridLines="None"
-                                            HeaderStyle-CssClass="table-light"
-                                            OnRowCommand="gvAllIssues_RowCommand">
-                                            <Columns>
-                                                <asp:BoundField DataField="IssueID" HeaderText="ID" />
-                                                <asp:TemplateField HeaderText="Type">
-                                                    <ItemTemplate>
-                                                        <span class="badge badge-<%# GetIssueTypeClass(Eval("IssueType").ToString()) %>">
-                                                            <%# Eval("IssueType") %>
-                                                        </span>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:BoundField DataField="Title" HeaderText="Title" />
-                                                <asp:TemplateField HeaderText="Status">
-                                                    <ItemTemplate>
-                                                        <span class="badge badge-<%# GetStatusClass(Eval("Status").ToString()) %>">
-                                                            <i class="fas <%# GetStatusIcon(Eval("Status").ToString()) %> me-1"></i>
-                                                            <%# Eval("Status") %>
-                                                        </span>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:BoundField DataField="Priority" HeaderText="Priority" />
-                                                <asp:BoundField DataField="Reporter" HeaderText="Reporter" />
-                                                <asp:BoundField DataField="Department" HeaderText="Department" />
-                                                <asp:BoundField DataField="CreatedDate" HeaderText="Date" DataFormatString="{0:MMM dd, yyyy}" />
-                                                <asp:TemplateField HeaderText="Actions">
-                                                    <ItemTemplate>
-                                                        <div class="btn-group btn-group-sm">
-                                                            <asp:LinkButton ID="btnViewGrid" runat="server"
-                                                                CssClass="btn btn-outline-primary btn-sm"
-                                                                CommandName="ViewIssue"
-                                                                CommandArgument='<%# Eval("IssueID") %>'
-                                                                ToolTip="View Issue">
-                                                                <i class="fas fa-eye"></i>
-                                                            </asp:LinkButton>
-                                                            <asp:LinkButton ID="btnEditGrid" runat="server"
-                                                                CssClass="btn btn-outline-secondary btn-sm"
-                                                                CommandName="EditIssue"
-                                                                CommandArgument='<%# Eval("IssueID") %>'
-                                                                ToolTip="Edit Issue">
-                                                                <i class="fas fa-edit"></i>
-                                                            </asp:LinkButton>
-                                                            <button type="button" class="btn btn-outline-danger btn-sm" title="Delete Issue">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </div>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                            </Columns>
-                                        </asp:GridView>
-                                    </ContentTemplate>
-                                </asp:UpdatePanel>
+    <div class="container-fluid mt-4">
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="fw-bold mb-2">Welcome to PDS Issue Tracker</h2>
+                    <p class="mb-0 opacity-75">Manage your requirements, modifications, and bug reports efficiently</p>
+                </div>
+                <div class="col-md-4 text-end d-none d-md-block">
+                    <i class="fas fa-chart-bar" style="font-size: 4rem; opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1 small fw-medium">Total Issues</p>
+                            <h3 class="fw-bold mb-2" id="totalIssues">247</h3>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-arrow-up text-success me-1"></i>
+                                <span class="text-success small fw-medium">+12%</span>
+                                <span class="text-muted small ms-1">vs last month</span>
+                            </div>
+                        </div>
+                        <div class="stats-icon primary">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card danger">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1 small fw-medium">Open Issues</p>
+                            <h3 class="fw-bold mb-2" id="openIssues">43</h3>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-arrow-down text-success me-1"></i>
+                                <span class="text-success small fw-medium">-8%</span>
+                                <span class="text-muted small ms-1">vs last month</span>
+                            </div>
+                        </div>
+                        <div class="stats-icon danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card warning">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1 small fw-medium">In Progress</p>
+                            <h3 class="fw-bold mb-2" id="inProgressIssues">87</h3>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-arrow-up text-success me-1"></i>
+                                <span class="text-success small fw-medium">+15%</span>
+                                <span class="text-muted small ms-1">vs last month</span>
+                            </div>
+                        </div>
+                        <div class="stats-icon warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card success">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1 small fw-medium">Resolved</p>
+                            <h3 class="fw-bold mb-2" id="resolvedIssues">117</h3>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-arrow-up text-success me-1"></i>
+                                <span class="text-success small fw-medium">+23%</span>
+                                <span class="text-muted small ms-1">vs last month</span>
+                            </div>
+                        </div>
+                        <div class="stats-icon success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="mb-4">
+            <h3 class="fw-bold mb-2">Quick Actions</h3>
+            <p class="text-muted mb-4">Create new issues and manage your requests efficiently</p>
+            
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="action-card text-center" onclick="showNewIssueModal('Requirement', 'New Requirement', 'Submit new feature requests and system requirements', 'fa-plus', 'success')">
+                        <div class="action-icon success mx-auto">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">New Requirement</h5>
+                        <p class="text-muted mb-3">Submit new feature requests and system requirements</p>
+                        <button type="button" class="btn btn-success btn-custom">
+                            Create Requirement
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="action-card text-center" onclick="showNewIssueModal('Modification', 'Modification Request', 'Request changes to existing pages and features', 'fa-edit', 'warning')">
+                        <div class="action-icon warning mx-auto">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Modification Request</h5>
+                        <p class="text-muted mb-3">Request changes to existing pages and features</p>
+                        <button type="button" class="btn btn-warning btn-custom">
+                            Create Modification
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="action-card text-center" onclick="showNewIssueModal('Bug', 'Bug Report', 'Report bugs, errors, and system issues', 'fa-bug', 'danger')">
+                        <div class="action-icon danger mx-auto">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Bug Report</h5>
+                        <p class="text-muted mb-3">Report bugs, errors, and system issues</p>
+                        <button type="button" class="btn btn-danger btn-custom">
+                            Create Bug Report
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="action-card text-center" onclick="showReportAnalysisModal()">
+                        <div class="action-icon info mx-auto">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Report Analysis</h5>
+                        <p class="text-muted mb-3">View detailed analytics and performance metrics</p>
+                        <button type="button" class="btn btn-primary btn-custom">
+                            View Analysis
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Tabs -->
+        <ul class="nav nav-tabs mb-4" id="mainTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button" role="tab">
+                    <i class="fas fa-chart-pie me-2"></i>Dashboard
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="issues-tab" data-bs-toggle="tab" data-bs-target="#issues" type="button" role="tab">
+                    <i class="fas fa-list me-2"></i>All Issues
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reports-tab" data-bs-toggle="tab" data-bs-target="#reports" type="button" role="tab">
+                    <i class="fas fa-chart-bar me-2"></i>Reports
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="mainTabsContent">
+            <!-- Dashboard Tab -->
+            <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-8 mb-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white border-bottom">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-list me-2 text-primary"></i>Recent Issues
+                                </h5>
+                                <small class="text-muted">Latest issues requiring attention</small>
+                            </div>
+                            <div class="card-body" id="recentIssuesContainer">
+                                <!-- Recent issues will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white border-bottom">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-clock me-2 text-primary"></i>Recent Activity
+                                </h5>
+                                <small class="text-muted">Latest updates and changes</small>
+                            </div>
+                            <div class="card-body" id="recentActivityContainer">
+                                <!-- Recent activity will be populated by JavaScript -->
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Reports Tab -->
-                <div class="tab-pane fade" id="reports" role="tabpanel">
+            <!-- All Issues Tab -->
+            <div class="tab-pane fade" id="issues" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h3 class="fw-bold mb-1">All Issues</h3>
+                        <p class="text-muted mb-0">Manage and track all your issues</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="filterIssues()">
+                            <i class="fas fa-filter me-1"></i>Filter
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="searchIssues()">
+                            <i class="fas fa-search me-1"></i>Search
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="exportIssues()">
+                            <i class="fas fa-download me-1"></i>Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="allIssuesTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Type</th>
+                                        <th>Title</th>
+                                        <th>Status</th>
+                                        <th>Priority</th>
+                                        <th>Reporter</th>
+                                        <th>Department</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="issuesTableBody">
+                                    <!-- Issues will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div class="tab-pane fade" id="reports" role="tabpanel">
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-0 shadow-sm border-start border-primary border-4">
+                            <div class="card-body">
+                                <h6 class="text-muted mb-1">Total Requirements</h6>
+                                <h3 class="fw-bold mb-2" id="totalRequirements">142</h3>
+                                <small class="text-success">
+                                    <i class="fas fa-arrow-up me-1"></i>+12% from last month
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-0 shadow-sm border-start border-warning border-4">
+                            <div class="card-body">
+                                <h6 class="text-muted mb-1">Modifications</h6>
+                                <h3 class="fw-bold mb-2" id="totalModifications">68</h3>
+                                <small class="text-success">
+                                    <i class="fas fa-arrow-up me-1"></i>+8% from last month
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-0 shadow-sm border-start border-danger border-4">
+                            <div class="card-body">
+                                <h6 class="text-muted mb-1">Bug Reports</h6>
+                                <h3 class="fw-bold mb-2" id="totalBugs">37</h3>
+                                <small class="text-success">
+                                    <i class="fas fa-arrow-down me-1"></i>-15% from last month
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-0 shadow-sm border-start border-success border-4">
+                            <div class="card-body">
+                                <h6 class="text-muted mb-1">Resolution Rate</h6>
+                                <h3 class="fw-bold mb-2" id="resolutionRate">87%</h3>
+                                <small class="text-success">
+                                    <i class="fas fa-arrow-up me-1"></i>+3% from last month
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New/Edit Issue Modal -->
+    <div class="modal fade" id="newIssueModal" tabindex="-1" aria-labelledby="newIssueModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <div class="d-flex align-items-center gap-3">
+                        <div id="modalIcon" class="action-icon success">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <div>
+                            <h5 class="modal-title fw-bold" id="newIssueModalLabel">New Issue</h5>
+                            <small class="text-muted" id="modalDescription">Submit a new issue</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="issueForm">
+                        <input type="hidden" id="issueType" name="issueType">
+                        <input type="hidden" id="issueId" name="issueId">
+                        <input type="hidden" id="isEdit" name="isEdit" value="false">
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="priority" class="form-label">Priority Level</label>
+                                <select id="priority" name="priority" class="form-select" required>
+                                    <option value="">Select priority</option>
+                                    <option value="Critical">🔴 Critical</option>
+                                    <option value="High">🟠 High</option>
+                                    <option value="Medium">🟡 Medium</option>
+                                    <option value="Low">🔵 Low</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="department" class="form-label">Department</label>
+                                <select id="department" name="department" class="form-select" required>
+                                    <option value="">Select department</option>
+                                    <option value="IT">💻 IT</option>
+                                    <option value="Finance">💰 Finance</option>
+                                    <option value="HR">👥 HR</option>
+                                    <option value="Operations">⚙️ Operations</option>
+                                    <option value="Marketing">📈 Marketing</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="location" class="form-label">Location</label>
+                                <select id="location" name="location" class="form-select" required>
+                                    <option value="">Select location</option>
+                                    <option value="Hyderabad">🏢 Hyderabad</option>
+                                    <option value="Mumbai">🏢 Mumbai</option>
+                                    <option value="Delhi">🏢 Delhi</option>
+                                    <option value="Bangalore">🏢 Bangalore</option>
+                                    <option value="Chennai">🏢 Chennai</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="reporter" class="form-label">Reporter Name</label>
+                                <input type="text" id="reporter" name="reporter" class="form-control" placeholder="Enter your name" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3" id="statusRow" style="display: none;">
+                            <div class="col-md-6">
+                                <label for="status" class="form-label">Status</label>
+                                <select id="status" name="status" class="form-select">
+                                    <option value="Open">🔴 Open</option>
+                                    <option value="In Progress">🟡 In Progress</option>
+                                    <option value="Resolved">🟢 Resolved</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="pageUrl" class="form-label">Page URL (Optional)</label>
+                            <input type="text" id="pageUrl" name="pageUrl" class="form-control" placeholder="/dashboard or https://example.com/page">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Subject</label>
+                            <input type="text" id="title" name="title" class="form-control" placeholder="Brief description of the issue" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Detailed Description</label>
+                            <textarea id="description" name="description" class="form-control" rows="4" placeholder="Provide detailed information about the issue..." required></textarea>
+                        </div>
+
+                        <div class="card border-2 border-dashed" id="fileUploadSection">
+                            <div class="card-body text-center py-4">
+                                <i class="fas fa-upload text-muted mb-2" style="font-size: 2rem;"></i>
+                                <p class="text-muted mb-1">Upload attachments (Optional)</p>
+                                <small class="text-muted">Supported formats: PDF, DOC, DOCX, JPG, PNG (Max 10MB)</small>
+                                <br>
+                                <input type="file" id="attachment" name="attachment" class="form-control mt-3" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-top-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="submitIssueBtn" onclick="submitIssue()">Submit Issue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Issue Modal -->
+    <div class="modal fade" id="viewIssueModal" tabindex="-1" aria-labelledby="viewIssueModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="action-icon info">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div>
+                            <h5 class="modal-title fw-bold" id="viewIssueModalLabel">Issue Details</h5>
+                            <small class="text-muted">View issue information</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="viewIssueContent">
+                    <!-- Issue details will be populated by JavaScript -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Analysis Modal -->
+    <div class="modal fade" id="reportAnalysisModal" tabindex="-1" aria-labelledby="reportAnalysisModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="action-icon info">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div>
+                            <h5 class="modal-title fw-bold" id="reportAnalysisModalLabel">Report Analysis Dashboard</h5>
+                            <small class="text-muted">Comprehensive analytics and performance metrics</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Key Metrics Row -->
                     <div class="row mb-4">
                         <div class="col-md-3 mb-3">
-                            <div class="card border-0 shadow-sm border-start border-primary border-4">
-                                <div class="card-body">
-                                    <h6 class="text-muted mb-1">Total Requirements</h6>
-                                    <h3 class="fw-bold mb-2">
-                                        <asp:Label ID="lblTotalRequirements" runat="server" Text="0" />
-                                    </h3>
-                                    <small class="text-success">
-                                        <i class="fas fa-arrow-up me-1"></i>+12% from last month
-                                    </small>
-                                </div>
+                            <div class="metric-card">
+                                <div class="metric-value text-primary">4.2</div>
+                                <div class="metric-label">Avg Resolution Time (Days)</div>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
-                            <div class="card border-0 shadow-sm border-start border-warning border-4">
-                                <div class="card-body">
-                                    <h6 class="text-muted mb-1">Modifications</h6>
-                                    <h3 class="fw-bold mb-2">
-                                        <asp:Label ID="lblTotalModifications" runat="server" Text="0" />
-                                    </h3>
-                                    <small class="text-success">
-                                        <i class="fas fa-arrow-up me-1"></i>+8% from last month
-                                    </small>
-                                </div>
+                            <div class="metric-card">
+                                <div class="metric-value text-success">87%</div>
+                                <div class="metric-label">Resolution Rate</div>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
-                            <div class="card border-0 shadow-sm border-start border-danger border-4">
-                                <div class="card-body">
-                                    <h6 class="text-muted mb-1">Bug Reports</h6>
-                                    <h3 class="fw-bold mb-2">
-                                        <asp:Label ID="lblTotalBugs" runat="server" Text="0" />
-                                    </h3>
-                                    <small class="text-success">
-                                        <i class="fas fa-arrow-down me-1"></i>-15% from last month
-                                    </small>
-                                </div>
+                            <div class="metric-card">
+                                <div class="metric-value text-warning">43</div>
+                                <div class="metric-label">Pending Issues</div>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
-                            <div class="card border-0 shadow-sm border-start border-success border-4">
+                            <div class="metric-card">
+                                <div class="metric-value text-info">4.6</div>
+                                <div class="metric-label">Customer Satisfaction</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">Issue Types Distribution</h6>
+                                </div>
                                 <div class="card-body">
-                                    <h6 class="text-muted mb-1">Resolution Rate</h6>
-                                    <h3 class="fw-bold mb-2">
-                                        <asp:Label ID="lblOverallResolutionRate" runat="server" Text="0%" />
-                                    </h3>
-                                    <small class="text-success">
-                                        <i class="fas fa-arrow-up me-1"></i>+3% from last month
-                                    </small>
+                                    <div class="report-chart">
+                                        <canvas id="issueTypeChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">Monthly Trend</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="report-chart">
+                                        <canvas id="monthlyTrendChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- New/Edit Issue Modal -->
-        <div class="modal fade" id="newIssueModal" tabindex="-1" aria-labelledby="newIssueModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header border-bottom-0">
-                        <div class="d-flex align-items-center gap-3">
-                            <div id="modalIcon" class="action-icon success">
-                                <i class="fas fa-plus"></i>
-                            </div>
-                            <div>
-                                <h5 class="modal-title fw-bold" id="newIssueModalLabel">New Issue</h5>
-                                <small class="text-muted" id="modalDescription">Submit a new issue</small>
-                            </div>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <asp:UpdatePanel ID="UpdatePanelModal" runat="server">
-                            <ContentTemplate>
-                                <asp:HiddenField ID="hfIssueType" runat="server" />
-                                <asp:HiddenField ID="hfIssueID" runat="server" />
-                                <asp:HiddenField ID="hfIsEdit" runat="server" />
-
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="ddlPriority" class="form-label">Priority Level</label>
-                                        <asp:DropDownList ID="ddlPriority" runat="server" CssClass="form-select">
-                                            <asp:ListItem Value="">Select priority</asp:ListItem>
-                                            <asp:ListItem Value="Critical">🔴 Critical</asp:ListItem>
-                                            <asp:ListItem Value="High">🟠 High</asp:ListItem>
-                                            <asp:ListItem Value="Medium">🟡 Medium</asp:ListItem>
-                                            <asp:ListItem Value="Low">🔵 Low</asp:ListItem>
-                                        </asp:DropDownList>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="ddlDepartment" class="form-label">Department</label>
-                                        <asp:DropDownList ID="ddlDepartment" runat="server" CssClass="form-select">
-                                            <asp:ListItem Value="">Select department</asp:ListItem>
-                                            <asp:ListItem Value="IT">💻 IT</asp:ListItem>
-                                            <asp:ListItem Value="Finance">💰 Finance</asp:ListItem>
-                                            <asp:ListItem Value="HR">👥 HR</asp:ListItem>
-                                            <asp:ListItem Value="Operations">⚙️ Operations</asp:ListItem>
-                                            <asp:ListItem Value="Marketing">📈 Marketing</asp:ListItem>
-                                        </asp:DropDownList>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="ddlLocation" class="form-label">Location</label>
-                                        <asp:DropDownList ID="ddlLocation" runat="server" CssClass="form-select">
-                                            <asp:ListItem Value="">Select location</asp:ListItem>
-                                            <asp:ListItem Value="Hyderabad">🏢 Hyderabad</asp:ListItem>
-                                            <asp:ListItem Value="Mumbai">🏢 Mumbai</asp:ListItem>
-                                            <asp:ListItem Value="Delhi">🏢 Delhi</asp:ListItem>
-                                            <asp:ListItem Value="Bangalore">🏢 Bangalore</asp:ListItem>
-                                            <asp:ListItem Value="Chennai">🏢 Chennai</asp:ListItem>
-                                        </asp:DropDownList>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="txtReporter" class="form-label">Reporter Name</label>
-                                        <asp:TextBox ID="txtReporter" runat="server" CssClass="form-control" placeholder="Enter your name" />
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3" id="statusRow" runat="server" visible="false">
-                                    <div class="col-md-6">
-                                        <label for="ddlStatus" class="form-label">Status</label>
-                                        <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-select">
-                                            <asp:ListItem Value="Open">🔴 Open</asp:ListItem>
-                                            <asp:ListItem Value="In Progress">🟡 In Progress</asp:ListItem>
-                                            <asp:ListItem Value="Resolved">🟢 Resolved</asp:ListItem>
-                                        </asp:DropDownList>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <!-- Empty column for spacing -->
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="txtPageUrl" class="form-label">Page URL (Optional)</label>
-                                    <asp:TextBox ID="txtPageUrl" runat="server" CssClass="form-control" placeholder="/dashboard or https://example.com/page" />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="txtTitle" class="form-label">Subject</label>
-                                    <asp:TextBox ID="txtTitle" runat="server" CssClass="form-control" placeholder="Brief description of the issue" />
-                                    <asp:RequiredFieldValidator ID="rfvTitle" runat="server"
-                                        ControlToValidate="txtTitle"
-                                        ErrorMessage="Subject is required"
-                                        CssClass="text-danger small"
-                                        Display="Dynamic" />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="txtDescription" class="form-label">Detailed Description</label>
-                                    <asp:TextBox ID="txtDescription" runat="server"
-                                        CssClass="form-control"
-                                        TextMode="MultiLine"
-                                        Rows="4"
-                                        placeholder="Provide detailed information about the issue..." />
-                                    <asp:RequiredFieldValidator ID="rfvDescription" runat="server"
-                                        ControlToValidate="txtDescription"
-                                        ErrorMessage="Description is required"
-                                        CssClass="text-danger small"
-                                        Display="Dynamic" />
-                                </div>
-
-                                <div class="card border-2 border-dashed" id="fileUploadSection" runat="server">
-                                    <div class="card-body text-center py-4">
-                                        <i class="fas fa-upload text-muted mb-2" style="font-size: 2rem;"></i>
-                                        <p class="text-muted mb-1">Upload attachments (Optional)</p>
-                                        <small class="text-muted">Supported formats: PDF, DOC, DOCX, JPG, PNG (Max 10MB)</small>
-                                        <br />
-                                        <asp:FileUpload ID="fuAttachment" runat="server" CssClass="form-control mt-3" />
-                                    </div>
-                                </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
-                    </div>
-                    <div class="modal-footer border-top-0">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <asp:Button ID="btnSubmitIssue" runat="server"
-                            CssClass="btn btn-primary-custom"
-                            Text="Submit Issue"
-                            OnClick="btnSubmitIssue_Click" />
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="exportReport()">Export Report</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- View Issue Modal -->
-        <div class="modal fade" id="viewIssueModal" tabindex="-1" aria-labelledby="viewIssueModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="action-icon info">
-                                <i class="fas fa-eye"></i>
-                            </div>
-                            <div>
-                                <h5 class="modal-title fw-bold" id="viewIssueModalLabel">Issue Details</h5>
-                                <small class="text-muted">View issue information</small>
-                            </div>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <asp:UpdatePanel ID="UpdatePanelView" runat="server">
-                            <ContentTemplate>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <strong>Issue ID:</strong>
-                                        <p><asp:Label ID="lblViewIssueID" runat="server" /></p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <strong>Issue Type:</strong>
-                                        <p><asp:Label ID="lblViewIssueType" runat="server" /></p>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <strong>Priority:</strong>
-                                        <p><asp:Label ID="lblViewPriority" runat="server" /></p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <strong>Status:</strong>
-                                        <p><asp:Label ID="lblViewStatus" runat="server" /></p>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <strong>Department:</strong>
-                                        <p><asp:Label ID="lblViewDepartment" runat="server" /></p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <strong>Location:</strong>
-                                        <p><asp:Label ID="lblViewLocation" runat="server" /></p>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <strong>Reporter:</strong>
-                                        <p><asp:Label ID="lblViewReporter" runat="server" /></p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <strong>Created Date:</strong>
-                                        <p><asp:Label ID="lblViewCreatedDate" runat="server" /></p>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <strong>Subject:</strong>
-                                    <p><asp:Label ID="lblViewTitle" runat="server" /></p>
-                                </div>
-                                <div class="mb-3">
-                                    <strong>Description:</strong>
-                                    <p><asp:Label ID="lblViewDescription" runat="server" /></p>
-                                </div>
-                                <div class="mb-3" id="pageUrlView" runat="server" visible="false">
-                                    <strong>Page URL:</strong>
-                                    <p><asp:Label ID="lblViewPageUrl" runat="server" /></p>
-                                </div>
-                                <div class="mb-3" id="attachmentView" runat="server" visible="false">
-                                    <strong>Attachment:</strong>
-                                    <p><asp:HyperLink ID="lnkViewAttachment" runat="server" Target="_blank" /></p>
-                                </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Report Analysis Modal -->
-        <div class="modal fade" id="reportAnalysisModal" tabindex="-1" aria-labelledby="reportAnalysisModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="action-icon info">
-                                <i class="fas fa-chart-pie"></i>
-                            </div>
-                            <div>
-                                <h5 class="modal-title fw-bold" id="reportAnalysisModalLabel">Report Analysis Dashboard</h5>
-                                <small class="text-muted">Comprehensive analytics and performance metrics</small>
-                            </div>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <asp:UpdatePanel ID="UpdatePanelReportAnalysis" runat="server">
-                            <ContentTemplate>
-                                <!-- Key Metrics Row -->
-                                <div class="row mb-4">
-                                    <div class="col-md-3 mb-3">
-                                        <div class="metric-card">
-                                            <div class="metric-value text-primary">
-                                                <asp:Label ID="lblAvgResolutionTime" runat="server" Text="0" />
-                                            </div>
-                                            <div class="metric-label">Avg Resolution Time (Days)</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <div class="metric-card">
-                                            <div class="metric-value text-success">
-                                                <asp:Label ID="lblResolutionRate" runat="server" Text="0%" />
-                                            </div>
-                                            <div class="metric-label">Resolution Rate</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <div class="metric-card">
-                                            <div class="metric-value text-warning">
-                                                <asp:Label ID="lblPendingIssues" runat="server" Text="0" />
-                                            </div>
-                                            <div class="metric-label">Pending Issues</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <div class="metric-card">
-                                            <div class="metric-value text-info">
-                                                <asp:Label ID="lblCustomerSatisfaction" runat="server" Text="0" />
-                                            </div>
-                                            <div class="metric-label">Customer Satisfaction</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Dashboard Content Moved Here -->
-                                <div class="row mb-4">
-                                    <div class="col-lg-8 mb-4">
-                                        <div class="card border-0 shadow-sm">
-                                            <div class="card-header bg-white border-bottom">
-                                                <h5 class="card-title mb-0">
-                                                    <i class="fas fa-list me-2 text-primary"></i>Recent Issues
-                                                </h5>
-                                                <small class="text-muted">Latest issues requiring attention</small>
-                                            </div>
-                                            <div class="card-body">
-                                                <asp:Repeater ID="rptAnalysisRecentIssues" runat="server">
-                                                    <ItemTemplate>
-                                                        <div class="issue-card">
-                                                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                                                <div class="d-flex align-items-center gap-2">
-                                                                    <span class="badge badge-<%# GetIssueTypeClass(Eval("IssueType").ToString()) %>">
-                                                                        <%# Eval("IssueType") %>
-                                                                    </span>
-                                                                    <small class="text-muted font-monospace"><%# Eval("IssueID") %></small>
-                                                                </div>
-                                                            </div>
-                                                            <h6 class="fw-bold mb-2"><%# Eval("Title") %></h6>
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <div class="d-flex align-items-center gap-3">
-                                                                    <span class="badge badge-<%# GetStatusClass(Eval("Status").ToString()) %>">
-                                                                        <i class="fas <%# GetStatusIcon(Eval("Status").ToString()) %> me-1"></i>
-                                                                        <%# Eval("Status") %>
-                                                                    </span>
-                                                                    <span class="badge bg-light text-dark"><%# Eval("Priority") %></span>
-                                                                    <small class="text-muted"><%# Eval("Department") %></small>
-                                                                </div>
-                                                                <div class="text-end">
-                                                                    <div class="fw-medium small"><%# Eval("Reporter") %></div>
-                                                                    <div class="text-muted small"><%# Eval("CreatedDate", "{0:MMM dd, yyyy}") %></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-4 mb-4">
-                                        <div class="card border-0 shadow-sm">
-                                            <div class="card-header bg-white border-bottom">
-                                                <h5 class="card-title mb-0">
-                                                    <i class="fas fa-clock me-2 text-primary"></i>Recent Activity
-                                                </h5>
-                                                <small class="text-muted">Latest updates and changes</small>
-                                            </div>
-                                            <div class="card-body">
-                                                <asp:Repeater ID="rptAnalysisRecentActivity" runat="server">
-                                                    <ItemTemplate>
-                                                        <div class="activity-item">
-                                                            <div class="d-flex align-items-start gap-3">
-                                                                <div class="activity-icon bg-light">
-                                                                    <i class="fas <%# GetActivityIcon(Eval("ActivityType").ToString()) %>"></i>
-                                                                </div>
-                                                                <div class="flex-grow-1">
-                                                                    <div class="d-flex justify-content-between align-items-start mb-1">
-                                                                        <small class="fw-medium"><%# Eval("ActivityType") %></small>
-                                                                        <span class="badge badge-<%# GetIssueTypeClass(Eval("IssueType").ToString()) %> small">
-                                                                            <%# Eval("IssueType") %>
-                                                                        </span>
-                                                                    </div>
-                                                                    <p class="small text-muted mb-1"><%# Eval("Description") %></p>
-                                                                    <div class="d-flex align-items-center gap-2 small text-muted">
-                                                                        <span><%# Eval("UserName") %></span>
-                                                                        <span>•</span>
-                                                                        <span><%# Eval("ActivityTime") %></span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Charts Row -->
-                                <div class="row mb-4">
-                                    <div class="col-md-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h6 class="card-title mb-0">Issue Types Distribution</h6>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="report-chart">
-                                                    <div class="text-center">
-                                                        <i class="fas fa-chart-pie text-muted" style="font-size: 3rem;"></i>
-                                                        <p class="text-muted mt-2">
-                                                            Requirements: <asp:Label ID="lblReqPercentage" runat="server" Text="0%" /><br />
-                                                            Modifications: <asp:Label ID="lblModPercentage" runat="server" Text="0%" /><br />
-                                                            Bugs: <asp:Label ID="lblBugPercentage" runat="server" Text="0%" />
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h6 class="card-title mb-0">Monthly Trend</h6>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="report-chart">
-                                                    <div class="text-center">
-                                                        <i class="fas fa-chart-line text-muted" style="font-size: 3rem;"></i>
-                                                        <p class="text-muted mt-2">Trending upward<br />+15% this month</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Department Performance -->
-                                <div class="row mb-4">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h6 class="card-title mb-0">Department Performance</h6>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <asp:GridView ID="gvDepartmentPerformance" runat="server"
-                                                        CssClass="table table-hover"
-                                                        AutoGenerateColumns="false"
-                                                        GridLines="None"
-                                                        HeaderStyle-CssClass="table-light">
-                                                        <Columns>
-                                                            <asp:BoundField DataField="Department" HeaderText="Department" />
-                                                            <asp:BoundField DataField="TotalIssues" HeaderText="Total Issues" />
-                                                            <asp:BoundField DataField="ResolvedIssues" HeaderText="Resolved" />
-                                                            <asp:BoundField DataField="PendingIssues" HeaderText="Pending" />
-                                                            <asp:BoundField DataField="ResolutionRate" HeaderText="Resolution Rate" DataFormatString="{0:P0}" />
-                                                            <asp:BoundField DataField="AvgResolutionTime" HeaderText="Avg Time (Days)" DataFormatString="{0:F1}" />
-                                                        </Columns>
-                                                    </asp:GridView>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Priority Analysis -->
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h6 class="card-title mb-0">Priority Level Analysis</h6>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-3 text-center">
-                                                        <div class="metric-value text-danger">
-                                                            <asp:Label ID="lblCriticalCount" runat="server" Text="0" />
-                                                        </div>
-                                                        <div class="metric-label">Critical</div>
-                                                    </div>
-                                                    <div class="col-md-3 text-center">
-                                                        <div class="metric-value text-warning">
-                                                            <asp:Label ID="lblHighCount" runat="server" Text="0" />
-                                                        </div>
-                                                        <div class="metric-label">High</div>
-                                                    </div>
-                                                    <div class="col-md-3 text-center">
-                                                        <div class="metric-value text-info">
-                                                            <asp:Label ID="lblMediumCount" runat="server" Text="0" />
-                                                        </div>
-                                                        <div class="metric-label">Medium</div>
-                                                    </div>
-                                                    <div class="col-md-3 text-center">
-                                                        <div class="metric-value text-success">
-                                                            <asp:Label ID="lblLowCount" runat="server" Text="0" />
-                                                        </div>
-                                                        <div class="metric-label">Low</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Export Report</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-                                                                  <script src="script.js"></script>
-
-        <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    </form>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
 </body>
 </html>
